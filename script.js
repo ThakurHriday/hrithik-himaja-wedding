@@ -234,16 +234,28 @@ function revealScratch() {
 }
 scratchCanvas.addEventListener("pointerdown", event => {
   if (revealed) return;
+  // Prevent iOS Safari from treating the scratch gesture as page scrolling.
+  if (event.cancelable) event.preventDefault();
   isScratching = true;
   scratchCanvas.setPointerCapture(event.pointerId);
   scratchAt(event);
 });
 scratchCanvas.addEventListener("pointermove", event => {
-  if (isScratching && !revealed) scratchAt(event);
+  if (isScratching && !revealed) {
+    if (event.cancelable) event.preventDefault();
+    scratchAt(event);
+  }
 });
 ["pointerup", "pointercancel", "lostpointercapture"].forEach(name => {
   scratchCanvas.addEventListener(name, () => { isScratching = false; });
 });
+// Explicit non-passive touch fallback for Safari on iPhone.
+scratchCanvas.addEventListener("touchstart", event => {
+  if (!revealed && event.cancelable) event.preventDefault();
+}, { passive: false });
+scratchCanvas.addEventListener("touchmove", event => {
+  if (!revealed && event.cancelable) event.preventDefault();
+}, { passive: false });
 revealButton.addEventListener("click", revealScratch);
 paintScratchCover();
 
