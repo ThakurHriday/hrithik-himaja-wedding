@@ -1036,3 +1036,17 @@ body.is-loading { overflow: hidden !important; }
 @media (max-width: 480px) {
   .music-toggle { right: 12px; bottom: max(12px, env(safe-area-inset-bottom)); padding: 10px 12px; }
 }
+
+
+/* iOS Safari fix: keep scratch gestures on the date heart instead of scrolling the page */
+#scratch-canvas,
+.heart-wrap,
+.heart-date,
+.scratch-stage {
+  touch-action: none;
+  -ms-touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+.scratch-stage { overscroll-behavior: contain; }
