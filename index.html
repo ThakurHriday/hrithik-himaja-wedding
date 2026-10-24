@@ -13,9 +13,6 @@
 </head>
 <body class="is-loading">
   <audio id="wedding-music" src="jashn-e-bahaaraa-instrumental.mp3" preload="auto" loop></audio>
-  <button id="music-toggle" class="music-toggle" type="button" aria-pressed="false" aria-label="Turn background music on">
-    <span class="music-icon" aria-hidden="true">♫</span><span class="music-label">Music off</span>
-  </button>
   <div class="scroll-progress" aria-hidden="true"><span id="progress-bar"></span></div>
   <canvas id="petals" aria-hidden="true"></canvas>
 
@@ -67,11 +64,40 @@
     </div>
   </section>
 
-  <header class="topbar">
-    <a class="monogram" href="#home" aria-label="Back to beginning">H<span>&</span>H</a>
-    <span class="topbar-note">A FOREVER BEGINS</span>
-    <a class="nav-link" href="#details">Wedding details <span>↗</span></a>
+  <header class="topbar" aria-label="Wedding invitation header">
+    <a class="monogram" href="#home" aria-label="Hrithik and Himaja — Invitation">H<span>&amp;</span>H</a>
+    <nav class="desktop-nav" aria-label="Invitation sections">
+      <a class="header-link" href="#home">Invitation</a>
+      <a class="header-link" href="#scratch">The date</a>
+      <a class="header-link" href="#details">Wedding details</a>
+      <a class="header-link" href="#ceremonies">Celebrations</a>
+      <a class="header-link" href="#gallery">Gallery</a>
+      <a class="header-link" href="#countdown-section">Countdown</a>
+      <a class="header-link" href="#closing">With love</a>
+    </nav>
+    <div class="header-actions">
+  <button id="music-toggle" class="music-toggle" type="button" aria-pressed="false" aria-label="Turn background music on">
+    <span class="music-icon" aria-hidden="true">♫</span><span class="music-label">Music off</span>
+  </button>
+      <button id="menu-toggle" class="header-icon menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu"><span aria-hidden="true">☰</span></button>
+    </div>
   </header>
+  <div id="menu-overlay" class="menu-overlay" hidden></div>
+  <dialog id="mobile-menu" class="mobile-menu" aria-label="Invitation menu">
+    <div class="menu-heading">
+      <span class="monogram">H<span>&amp;</span>H</span>
+      <button id="menu-close" class="header-icon" type="button" aria-label="Close menu"><span aria-hidden="true">×</span></button>
+    </div>
+    <nav aria-label="Mobile invitation sections">
+      <a class="header-link" href="#home">Invitation</a>
+      <a class="header-link" href="#scratch">The date</a>
+      <a class="header-link" href="#details">Wedding details</a>
+      <a class="header-link" href="#ceremonies">Celebrations</a>
+      <a class="header-link" href="#gallery">Gallery</a>
+      <a class="header-link" href="#countdown-section">Countdown</a>
+      <a class="header-link" href="#closing">With love</a>
+    </nav>
+  </dialog>
 
   <main id="site-content">
     <section class="hero scene" id="home" data-cinematic-scene="true">
@@ -201,7 +227,7 @@
       </div>
     </section>
 
-<section class="closing scene">
+<section class="closing scene" id="closing">
       <div class="closing-inner reveal">
         <div class="closing-ornament">✧</div>
         <p class="eyebrow">YOUR PRESENCE IS OUR PRESENT</p>
