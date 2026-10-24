@@ -1,4 +1,5 @@
 // Click-to-open invitation, scroll-based scene motion, scratch-off heart and falling petals.
+if (/iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)) document.documentElement.classList.add("is-ios");
 const intro = document.getElementById("door-intro");
 const skipButton = document.getElementById("skip-intro");
 const weddingMusic = document.getElementById("wedding-music");
