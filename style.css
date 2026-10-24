@@ -1191,3 +1191,16 @@ body.menu-open { overflow: hidden !important; }
   .topbar { padding: 10px 20px; min-height: 72px; }
 }
 @media (prefers-reduced-motion: reduce) { .mobile-menu[open] { animation: none; } }
+
+/* V28: the envelope screen always fills the whole visible phone screen (including when
+   browser toolbars hide/show), so the first page never peeks underneath it. */
+.envelope-sticky { height: 100vh; height: 100lvh; }
+.door-intro.envelope-intro .envelope-sticky { background-color: #1d0809; }
+body.is-loading #site-content, body.is-loading .footer { visibility: hidden; }
+/* V28: the first page waits directly behind the unfolded invitation and the invitation
+   dissolves into it, so there is no visible edge where the two pages meet. */
+#home { margin-top: -100vh; margin-top: -100lvh; }
+.door-intro.envelope-intro { position: relative !important; z-index: 200 !important; pointer-events: none; }
+.door-intro.envelope-intro .envelope-sticky { opacity: var(--intro-o, 1); pointer-events: auto; }
+.door-intro.envelope-intro.intro-faded .envelope-sticky { pointer-events: none; }
+.door-intro.envelope-intro { background: transparent !important; } .door-intro.envelope-intro .envelope-sticky { background: radial-gradient(ellipse at 50% 42%, rgba(117,57,38,.2), transparent 48%), linear-gradient(135deg,#160907,#2a0b0d 48%,#100605); }
