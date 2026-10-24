@@ -358,3 +358,60 @@ drawPetals();
   window.addEventListener('load', requestUpdate);
   updateCinematicScenes();
 })();
+
+// V26: accessible phone drawer and links to the existing invitation sections.
+const menuToggle = document.getElementById("menu-toggle");
+const menuClose = document.getElementById("menu-close");
+const mobileMenu = document.getElementById("mobile-menu");
+const menuOverlay = document.getElementById("menu-overlay");
+function closeInvitationMenu() {
+  mobileMenu.close();
+}
+menuToggle.addEventListener("click", () => {
+  mobileMenu.showModal();
+  menuOverlay.hidden = false;
+  document.body.classList.add("menu-open");
+  menuToggle.setAttribute("aria-expanded", "true");
+  menuClose.focus();
+});
+mobileMenu.addEventListener("close", () => {
+  menuOverlay.hidden = true;
+  document.body.classList.remove("menu-open");
+  menuToggle.setAttribute("aria-expanded", "false");
+  menuToggle.focus();
+});
+menuClose.addEventListener("click", closeInvitationMenu);
+menuOverlay.addEventListener("click", closeInvitationMenu);
+mobileMenu.addEventListener("click", event => {
+  if (event.target === mobileMenu) {
+    const rect = mobileMenu.getBoundingClientRect();
+    if (event.clientX < rect.left || event.clientX > rect.right) closeInvitationMenu();
+  }
+});
+document.querySelectorAll(".header-link, .topbar .monogram").forEach(link => {
+  link.addEventListener("click", event => {
+    const target = document.querySelector(link.getAttribute("href"));
+    if (!target) return;
+    event.preventDefault();
+    if (mobileMenu.open) closeInvitationMenu();
+    // Snap points should not steal a section-link destination beneath the header.
+    document.documentElement.style.scrollSnapType = "none";
+    const offset = document.querySelector(".topbar").offsetHeight + 12;
+    const y = target.id === "home" ? intro.offsetHeight - window.innerHeight : target.getBoundingClientRect().top + window.scrollY - offset;
+    window.scrollTo({ top: y, behavior: reducedMotion ? "instant" : "smooth" });
+    history.replaceState(null, "", link.getAttribute("href"));
+  });
+});
+window.matchMedia("(min-width: 1051px)").addEventListener("change", event => {
+  if (event.matches && mobileMenu.open) closeInvitationMenu();
+});
+const sectionObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    document.querySelectorAll(".header-link").forEach(link => {
+      if (link.getAttribute("href") === `#${entry.target.id}`) link.setAttribute("aria-current", "location");
+      else link.removeAttribute("aria-current");
+    });
+  });
+}, { rootMargin: "-15% 0px -65% 0px", threshold: 0 });
+document.querySelectorAll("#site-content > section[id]").forEach(section => sectionObserver.observe(section));
