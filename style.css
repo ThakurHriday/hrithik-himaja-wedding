@@ -1204,3 +1204,14 @@ body.is-loading #site-content, body.is-loading .footer { visibility: hidden; }
 .door-intro.envelope-intro .envelope-sticky { opacity: var(--intro-o, 1); pointer-events: auto; }
 .door-intro.envelope-intro.intro-faded .envelope-sticky { pointer-events: none; }
 .door-intro.envelope-intro { background: transparent !important; } .door-intro.envelope-intro .envelope-sticky { background: radial-gradient(ellipse at 50% 42%, rgba(117,57,38,.2), transparent 48%), linear-gradient(135deg,#160907,#2a0b0d 48%,#100605); }
+
+
+/* iOS/mobile scroll correction: prevent chapters snapping back while users
+   make short natural swipes from the envelope into the date reveal. */
+html, body {
+  scroll-snap-type: none !important;
+  scroll-behavior: auto;
+}
+[data-cinematic-scene="true"] {
+  scroll-snap-align: none !important;
+}
