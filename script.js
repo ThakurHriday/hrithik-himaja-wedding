@@ -81,6 +81,8 @@ function updateEnvelopeScroll() {
   intro.style.setProperty("--env-y", `${(b * vh * 0.6).toFixed(1)}px`);
   intro.style.setProperty("--env-o", (1 - clamp01(b * 1.6)).toFixed(3));
   intro.style.setProperty("--cue-o", entered ? (1 - clamp01(p / 0.12)).toFixed(3) : "1");
+  intro.style.setProperty("--intro-o", entered ? (1 - clamp01((p - 0.82) / 0.16)).toFixed(3) : "1");
+  intro.classList.toggle("intro-faded", entered && p > 0.9);
   intro.classList.toggle("card-lifted", p > 0.28);
   const done = p > 0.97 || rect.bottom <= vh;
   document.body.classList.toggle("site-entered", entered && done);
