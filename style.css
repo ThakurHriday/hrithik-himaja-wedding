@@ -926,7 +926,7 @@ body {
 body.is-loading { overflow: hidden !important; }
 .door-intro.envelope-intro {
   display: block !important;
-  height: 370svh !important;
+  height: 260svh !important; /* Faster envelope-to-invitation transition */
   min-height: 0 !important;
   overflow: clip !important;
   background: linear-gradient(135deg,#160907,#2a0b0d 48%,#100605) !important;
