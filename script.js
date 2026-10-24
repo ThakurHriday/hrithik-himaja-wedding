@@ -45,7 +45,7 @@ function enterInvitation() {
     document.body.classList.remove("is-loading");
     intro.classList.add("scroll-ready");
     updateEnvelopeScroll();
-  }, reducedMotion ? 40 : 500);
+  }, reducedMotion ? 60 : 700);
 }
 window.addEventListener("load", () => {
   intro.classList.add("ready");
