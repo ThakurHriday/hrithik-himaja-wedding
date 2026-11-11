@@ -11,12 +11,13 @@ import gopuram from "@/assets/gopuram-outline.webp";
 import imgRatjagah from "@/assets/ceremony-ratjagah.webp";
 import imgMandwa from "@/assets/ceremony-mandwa.webp";
 import imgWedding from "@/assets/ceremony-wedding.webp";
+import imgBaarat from "@/assets/ceremony-baarat.png";
 import imgKatha from "@/assets/ceremony-katha.webp";
 import photoRed from "@/assets/couple-red-lehenga.jpg";
 import photoPurple from "@/assets/couple-purple-saree.jpg";
 import photoOrange from "@/assets/couple-orange-kurta.jpg";
 
-const EVENT_ART: Record<EventKey, string> = { ratjagah: imgRatjagah, mandwa: imgMandwa, baarat: imgWedding, wedding: imgWedding, katha: imgKatha };
+const EVENT_ART: Record<EventKey, string> = { ratjagah: imgRatjagah, mandwa: imgMandwa, baarat: imgBaarat, wedding: imgWedding, katha: imgKatha };
 const EVENT_TONE: Record<EventKey, string> = {
   ratjagah: "text-ev-ratjagah",
   mandwa: "text-ev-mandwa",
