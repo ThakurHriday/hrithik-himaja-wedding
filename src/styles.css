@@ -1,0 +1,366 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-gold: var(--gold);
+  --color-ivory: var(--ivory);
+  --color-diya: var(--diya);
+  --color-maroon: var(--maroon);
+  --color-navy: var(--navy);
+  /* display face is scoped: the opening keeps Cinzel, invitation pages (.invite-type) use the label sans */
+  --font-display: var(--face-display);
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Cormorant Garamond", serif;
+  --font-deva: "Tiro Devanagari Sanskrit", serif;
+}
+
+:root {
+  --face-display: "Cinzel", serif;
+  --radius: 0.5rem;
+  /* deep base colour (token kept as "navy" for the opening's classes): royal evening red */
+  --navy: oklch(0.19 0.07 12);
+  --gold: oklch(0.8 0.12 82);
+  --ivory: oklch(0.96 0.02 85);
+  --diya: oklch(0.75 0.18 58);
+  --maroon: oklch(0.38 0.14 22);
+  --background: var(--navy);
+  --foreground: var(--ivory);
+  --card: oklch(0.24 0.09 18);
+  --card-foreground: var(--ivory);
+  --popover: oklch(0.24 0.09 18);
+  --popover-foreground: var(--ivory);
+  --primary: var(--gold);
+  --primary-foreground: var(--navy);
+  --secondary: oklch(0.3 0.11 20);
+  --secondary-foreground: var(--ivory);
+  --muted: oklch(0.3 0.08 20);
+  --muted-foreground: oklch(0.78 0.04 85);
+  --accent: var(--maroon);
+  --accent-foreground: var(--ivory);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: var(--ivory);
+  --border: oklch(0.8 0.12 82 / 30%);
+  --input: oklch(0.8 0.12 82 / 30%);
+  --ring: var(--gold);
+  /* fireworks palette: royal gold, warm white, soft orange, champagne */
+  --fw-gold: oklch(0.88 0.13 85);
+  --fw-white: oklch(0.97 0.03 85);
+  --fw-orange: oklch(0.8 0.14 60);
+  --fw-champagne: oklch(0.93 0.08 90);
+}
+
+@layer base {
+  * { border-color: var(--color-border); }
+  html, body { overflow-x: hidden; }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-serif);
+  }
+}
+
+@utility text-gold-gradient {
+  background: linear-gradient(180deg, oklch(0.95 0.08 90), var(--gold) 45%, oklch(0.6 0.12 70));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ---------- Diyas ---------- */
+@property --reveal { syntax: "<percentage>"; inherits: false; initial-value: 0%; }
+.deep-sky { background: linear-gradient(180deg, oklch(0.2 0.065 342), oklch(0.3 0.1 5) 45%, oklch(0.24 0.08 355) 60%); }
+.deep-water { background: linear-gradient(180deg, oklch(0.17 0.045 340), oklch(0.11 0.03 340)); }
+.temple-lit {
+  /* the lit band grows from the shoreline; at 0% every stop meets at the shore, so nothing shows */
+  --reveal: 0%;
+  -webkit-mask-image: linear-gradient(180deg, transparent calc(48.5% - var(--reveal)), #000 calc(48.5% - var(--reveal) + min(6%, var(--reveal))), #000 calc(48.5% + var(--reveal) - min(6%, var(--reveal))), transparent calc(48.5% + var(--reveal)));
+  mask-image: linear-gradient(180deg, transparent calc(48.5% - var(--reveal)), #000 calc(48.5% - var(--reveal) + min(6%, var(--reveal))), #000 calc(48.5% + var(--reveal) - min(6%, var(--reveal))), transparent calc(48.5% + var(--reveal)));
+  transition-property: --reveal; transition-timing-function: cubic-bezier(.45,.05,.3,1);
+}
+.temple-lit.on { --reveal: 60%; }
+
+/* Sunrise: a warm sun climbs from the horizon behind the temple (x ≈ spire, measured from the cut-out) */
+.sunrise { mix-blend-mode: screen; opacity: 0; transition: opacity 1.5s ease; overflow: hidden; }
+.sunrise.up { opacity: 1; }
+.sunrise .sun {
+  position: absolute; left: 36%; top: 52%; width: 26%; aspect-ratio: 1; transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, oklch(0.97 0.08 85) 0 14%, oklch(0.88 0.16 65 / .85) 20%, oklch(0.7 0.19 40 / .45) 38%, oklch(0.5 0.17 25 / .18) 58%, transparent 72%);
+  transition: top 7s cubic-bezier(.3,.1,.25,1), width 7s ease;
+}
+.sunrise.up .sun { top: 16%; width: 34%; }
+@media (prefers-reduced-motion: reduce) { .sunrise .sun { transition: none; } }
+
+/* A diya stands on its base: the anchor point is the centre of the clay foot. */
+.diya { position: absolute; transform: translate(-50%, -99.2%); pointer-events: none; }
+.diya .bowl { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain;
+  filter: brightness(.36) saturate(.8); transition: filter .9s ease var(--d, 0s); }
+.diya.lit .bowl { filter: brightness(1) saturate(1.05) drop-shadow(0 0 2px oklch(0.75 0.17 60 / 55%)); }
+/* contact shadow where the foot meets the stone */
+.diya .contact { position: absolute; left: 50%; top: 99%; width: 62%; height: 28%; border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(closest-side, oklch(0.1 0.02 40 / 85%), oklch(0.1 0.02 40 / 35%) 60%, transparent); }
+/* pool of golden light on the tread, flattened by the ground perspective */
+.diya .pool { position: absolute; left: 52%; top: 96%; width: 430%; height: 370%; border-radius: 50%;
+  transform: translate(-50%, -50%); mix-blend-mode: screen; opacity: 0;
+  background: radial-gradient(closest-side, oklch(0.84 0.15 72 / 60%), oklch(0.72 0.16 56 / 20%) 45%, transparent);
+  transition: opacity 1.4s ease var(--d, 0s); }
+.diya.lit .pool { opacity: 1; animation: pool var(--fd, 1s) ease-in-out infinite alternate; animation-delay: var(--fdl, 0s); }
+/* the cotton wick in the middle of the bowl, and the flame rising from it */
+.diya .wick { position: absolute; left: 52.2%; top: 31%; width: 3.4%; height: 11%; border-radius: 40%;
+  transform: translate(-50%, -100%); background: oklch(0.22 0.03 50); }
+.diya .flame { position: absolute; left: 52.2%; top: 28%; width: 13%; height: 74%;
+  transform: translate(-50%, -100%) scale(0); transform-origin: 50% 100%;
+  border-radius: 50% 50% 50% 50% / 70% 70% 30% 30%;
+  background:
+    radial-gradient(ellipse 35% 25% at 50% 88%, oklch(0.6 0.15 255 / 85%), transparent 70%),
+    radial-gradient(ellipse 30% 45% at 50% 70%, oklch(1 0.02 95), transparent 75%),
+    radial-gradient(ellipse 50% 70% at 50% 65%, oklch(0.9 0.15 85), oklch(0.72 0.2 50) 70%, transparent 100%);
+  filter: blur(.25px) drop-shadow(0 0 3px oklch(0.85 0.17 70)) drop-shadow(0 0 8px oklch(0.7 0.19 55 / 70%));
+  opacity: 0; transition: transform .5s cubic-bezier(.2,1.7,.4,1) var(--d, 0s), opacity .25s var(--d, 0s); }
+.diya.lit .flame { opacity: 1; transform: translate(-50%, -100%) scale(1);
+  animation: flicker var(--fd, 1s) ease-in-out infinite alternate; animation-delay: var(--fdl, 0s); }
+.diya .glow { position: absolute; left: 52.2%; top: -10%; width: 300%; aspect-ratio: 1; border-radius: 50%;
+  transform: translate(-50%, -50%); background: radial-gradient(circle, oklch(0.82 0.16 68 / 42%), oklch(0.7 0.17 55 / 12%) 35%, transparent 65%);
+  mix-blend-mode: screen; opacity: 0; transition: opacity 1.2s ease var(--d, 0s); }
+.diya.lit .glow { opacity: 1; }
+.diya.floating { animation: bob 5s ease-in-out infinite; }
+/* reflection of the flame: under the floating diya, or mirrored in the river below the plinth */
+.diya .refl { position: absolute; left: 52.2%; top: 99%; width: 16%; height: 170%; transform: translateX(-50%);
+  background: repeating-linear-gradient(180deg, oklch(0.85 0.15 70 / 80%) 0 3px, transparent 3px 7px);
+  -webkit-mask-image: linear-gradient(180deg, #000, transparent); mask-image: linear-gradient(180deg, #000, transparent);
+  filter: blur(1px); opacity: 0; transition: opacity 1.2s ease var(--d, 0s); }
+.diya .refl.river { top: calc(99% + var(--ry, 0px)); width: 18%; height: 130%; transform: translate(-50%, -50%);
+  background: repeating-linear-gradient(180deg, oklch(0.85 0.15 70 / 70%) 0 2px, transparent 2px 5px);
+  -webkit-mask-image: radial-gradient(closest-side, #000, transparent); mask-image: radial-gradient(closest-side, #000, transparent);
+  mix-blend-mode: screen; }
+.diya.lit .refl { opacity: .9; animation: ripple 2.4s ease-in-out infinite; }
+.diya.lit .refl.river { opacity: .7; animation-name: ripple-river; }
+
+.ghat-water-shimmer { animation: water-shimmer 3.2s ease-in-out infinite alternate; }
+
+/* ---------- Grand name reveal ---------- */
+.name-reveal::before { content: ""; position: absolute; inset: -18% -10%; z-index: -1; border-radius: 50%;
+  background: radial-gradient(closest-side, oklch(0.16 0.06 350 / 55%), transparent); opacity: 0; transition: opacity 1.6s ease; }
+.name-reveal.on::before { opacity: 1; }
+.reveal-fade { opacity: 0; transform: translateY(.3em); transition: opacity 1.2s ease, transform 1.2s cubic-bezier(.2,.7,.2,1); }
+.reveal-fade.on { opacity: 1; transform: none; }
+.reveal-heading { opacity: 0; letter-spacing: .7em; margin-right: -.7em; transition: opacity 1.6s ease, letter-spacing 2.2s cubic-bezier(.2,.7,.2,1), margin 2.2s cubic-bezier(.2,.7,.2,1); }
+.reveal-heading.on { opacity: 1; letter-spacing: .32em; margin-right: -.32em; }
+.reveal-name { display: inline-block; text-shadow: 0 0 .35em oklch(0.8 0.15 70 / 0.4);
+  transition: opacity 1.3s ease, transform 1.5s cubic-bezier(.2,.7,.2,1), filter 1.3s ease; }
+.reveal-name.text-gold-gradient { text-shadow: none; filter: drop-shadow(0 0 .25em oklch(0.8 0.15 70 / 0.45)); background-size: 100% 200%; }
+.reveal-name.settled { animation: name-glow 4s ease-in-out infinite alternate; }
+
+@keyframes flicker {
+  0% { transform: translate(-50%, -100%) scale(1, 1) skewX(0deg); }
+  25% { transform: translate(-52%, -100%) scale(.9, 1.1) skewX(-5deg); }
+  55% { transform: translate(-48%, -100%) scale(1.05, .92) skewX(4deg); }
+  80% { transform: translate(-50%, -100%) scale(.95, 1.06) skewX(-2deg); }
+  100% { transform: translate(-50%, -100%) scale(1, .98) skewX(1deg); }
+}
+@keyframes pool { 0% { opacity: .82 } 100% { opacity: 1 } }
+@keyframes ripple { 0%,100% { transform: translateX(-50%) scaleX(1); } 50% { transform: translateX(-50%) scaleX(1.6); } }
+@keyframes ripple-river { 0%,100% { transform: translate(-50%, -50%) scaleX(1); } 50% { transform: translate(-50%, -50%) scaleX(1.7); } }
+@keyframes water-shimmer { 0% { opacity: .7 } 100% { opacity: 1 } }
+@keyframes name-glow { 0% { filter: drop-shadow(0 0 .2em oklch(0.8 0.15 70 / 0.4)); } 100% { filter: drop-shadow(0 0 .45em oklch(0.85 0.16 75 / 0.7)); } }
+@keyframes twinkle { 0%,100% { opacity: .2 } 50% { opacity: 1 } }
+@keyframes bob { 0%,100% { transform: translate(-50%, -99.2%) translateY(0) rotate(-1.5deg) } 50% { transform: translate(-50%, -99.2%) translateY(-4px) rotate(1.5deg) } }
+@keyframes fade-up { from { opacity: 0; transform: translateY(16px) } to { opacity: 1; transform: none } }
+.anim-fade-up { animation: fade-up 1.4s cubic-bezier(.2,.7,.2,1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .diya.lit .flame, .diya.lit .refl, .diya.floating, .diya.lit .pool, .ghat-water-shimmer, .reveal-name.settled { animation: none; }
+}
+
+
+/* =====================================================================
+ * Invitation sections below the opening (paper, ornaments, reveals).
+ * The opening scene above is final; nothing here restyles it.
+ * ===================================================================== */
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-deep: var(--paper-deep);
+  --color-paper-frame: var(--paper-frame);
+  --color-gold-soft: var(--gold-soft);
+  --color-ev-ratjagah: var(--ev-ratjagah);
+  --color-ev-mandwa: var(--ev-mandwa);
+  --color-ev-wedding: var(--ev-wedding);
+  --color-ev-katha: var(--ev-katha);
+  --font-script: "Great Vibes", "Cormorant Garamond", serif;
+}
+
+:root {
+  --paper: oklch(0.17 0.07 14);
+  --paper-deep: oklch(0.15 0.06 14);
+  --paper-frame: oklch(0.44 0.13 25);
+  --gold-soft: oklch(0.88 0.07 86);
+  /* one colour per ceremony */
+  --ev-ratjagah: oklch(0.84 0.08 350);
+  --ev-mandwa: oklch(0.87 0.15 95);
+  --ev-wedding: oklch(0.78 0.15 62);
+  --ev-katha: oklch(0.83 0.1 160);
+  /* scratch foil */
+  --foil-1: oklch(0.6 0.1 70);
+  --foil-2: oklch(0.9 0.09 88);
+  --foil-3: oklch(0.73 0.12 74);
+  --foil-4: oklch(0.96 0.05 92);
+  --foil-ink: oklch(0.32 0.07 60);
+  /* dress-code swatches */
+  --dress-maroon: oklch(0.3 0.1 10);
+  --dress-red: oklch(0.52 0.19 26);
+  --dress-rani: oklch(0.55 0.2 0);
+  --dress-haldi: oklch(0.86 0.16 92);
+  --dress-marigold: oklch(0.75 0.17 60);
+  --dress-leaf: oklch(0.6 0.13 140);
+  --dress-gold: oklch(0.8 0.12 82);
+  --dress-ivory: oklch(0.95 0.03 85);
+  --dress-pink: oklch(0.86 0.07 350);
+  --dress-mint: oklch(0.88 0.07 165);
+  --dress-lilac: oklch(0.84 0.07 300);
+  --gradient-gold: linear-gradient(135deg, oklch(0.62 0.1 68), oklch(0.86 0.1 86) 45%, oklch(0.7 0.11 72) 70%, oklch(0.9 0.08 90));
+  --shadow-soft: 0 10px 30px -12px oklch(0.1 0.05 15 / 70%);
+  --shadow-glow: 0 0 40px -6px oklch(0.8 0.13 75 / 45%);
+}
+
+html { scroll-behavior: smooth; }
+
+/* invitation-page type: Cormorant Garamond for headings and values, Manrope for small spaced labels, Great Vibes for script accents */
+.invite-type { --face-display: "Manrope", ui-sans-serif, system-ui, sans-serif; }
+
+/* crushed crimson velvet: one pre-rendered tile (pile streaks, dark folds, soft sheen, nap grain)
+ * built from wrap-around noise, so it repeats in every direction without a visible line where a tile restarts.
+ * Never go back to SVG feTurbulence layers here: browsers render their tile edges with hard seams. */
+.paper {
+  background-color: var(--paper);
+  background-image: url("./assets/velvet-tile.webp");
+  background-repeat: repeat;
+  background-size: 720px 1440px;
+}
+/* soft vignette for the venue painting */
+.fade-edges {
+  -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, black 62%, transparent 100%);
+  mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, black 62%, transparent 100%);
+}
+/* the night of the opening melts into the paper */
+.paper-seam { background: linear-gradient(180deg, var(--navy), transparent); }
+
+/* Hindi copy uses the Devanagari face */
+.lang-hi .i18n { font-family: var(--font-deva); letter-spacing: 0; }
+
+@utility btn-gold {
+  background: var(--gradient-gold);
+  color: var(--navy);
+  box-shadow: var(--shadow-glow);
+  transition: filter .3s ease, transform .3s ease;
+  &:hover { filter: brightness(1.08); transform: translateY(-1px); }
+}
+
+/* scroll-in */
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity 1.1s ease, transform 1.2s cubic-bezier(.2,.7,.2,1); }
+.reveal.is-in { opacity: 1; transform: none; }
+@media (scripting: none) { .reveal { opacity: 1; transform: none; } }
+
+/* Mughal-arch photo frame, scales with its box */
+.arch {
+  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 140' preserveAspectRatio='none'><path d='M0 140V50Q0 30 20 26Q35 23 41 13Q46 5 50 0Q54 5 59 13Q65 23 80 26Q100 30 100 50V140Z'/></svg>") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 140' preserveAspectRatio='none'><path d='M0 140V50Q0 30 20 26Q35 23 41 13Q46 5 50 0Q54 5 59 13Q65 23 80 26Q100 30 100 50V140Z'/></svg>") center / 100% 100% no-repeat;
+}
+
+/* a row of little lamps */
+.lamp { position: relative; width: 100%; aspect-ratio: 320 / 156; }
+.lamp img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.lamp::before { content: ""; position: absolute; left: 52%; top: 30%; width: 300%; aspect-ratio: 1; border-radius: 50%; transform: translate(-50%, -55%);
+  background: radial-gradient(circle, oklch(0.82 0.16 68 / 35%), transparent 60%); mix-blend-mode: screen; pointer-events: none; }
+.lamp .flame { position: absolute; left: 52.2%; top: 30%; width: 14%; height: 75%; transform-origin: 50% 100%; transform: translate(-50%, -100%);
+  border-radius: 50% 50% 50% 50% / 70% 70% 30% 30%;
+  background: radial-gradient(ellipse 30% 45% at 50% 70%, oklch(1 0.02 95), transparent 75%), radial-gradient(ellipse 50% 70% at 50% 65%, oklch(0.9 0.15 85), oklch(0.72 0.2 50) 70%, transparent 100%);
+  filter: drop-shadow(0 0 3px oklch(0.85 0.17 70)) drop-shadow(0 0 8px oklch(0.7 0.19 55 / 70%));
+  animation: flicker 1.1s ease-in-out infinite alternate; }
+
+/* heart scratch card */
+.heart-glow { filter: drop-shadow(0 0 22px oklch(0.8 0.13 75 / 45%)); animation: heart-breathe 4.5s ease-in-out infinite; }
+.heart-foil { transition: opacity 1.2s ease, filter 1.2s ease; touch-action: none; cursor: grab; }
+.heart-foil.gone { opacity: 0; filter: blur(6px); pointer-events: none; }
+.heart-date > * { transition: opacity 1s ease, transform 1.2s cubic-bezier(.2,.7,.2,1); }
+.petal { position: absolute; left: 50%; top: 45%; width: 10px; height: 14px; border-radius: 80% 0 80% 0; pointer-events: none;
+  background: linear-gradient(135deg, var(--ev-wedding), var(--gold)); opacity: 0;
+  animation: petal 2.4s cubic-bezier(.2,.7,.3,1) forwards; animation-delay: var(--pd, 0s); }
+
+/* song disc + equaliser */
+.disc { background: repeating-radial-gradient(circle, oklch(0.16 0.05 15) 0 2px, oklch(0.23 0.07 18) 2px 4px); }
+.disc.spin { animation: spin 9s linear infinite; }
+.eq span { display: inline-block; width: 3px; border-radius: 2px; background: var(--gold); height: 30%; }
+.eq.on span { animation: eq 1s ease-in-out infinite alternate; }
+.eq.on span:nth-child(2) { animation-delay: .2s } .eq.on span:nth-child(3) { animation-delay: .45s } .eq.on span:nth-child(4) { animation-delay: .1s }
+
+.scroll-cue { animation: cue 2.2s ease-in-out infinite; }
+
+/* finger swipe-up hint at the foot of the opening */
+.swipe-finger { animation: swipe-finger 1.9s ease-in-out infinite; }
+.swipe-trail { animation: swipe-trail 1.9s linear infinite; }
+
+/* the diya scroll rail on the right replaces the browser's own scrollbar */
+html { scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }
+.diya-rail-trail { background: linear-gradient(180deg, transparent, var(--gold)); box-shadow: 0 0 8px oklch(0.82 0.16 68 / 60%); }
+.diya-thumb { transform: translate(-50%, -50%); transition: transform .2s ease; }
+.diya-rail:hover .diya-thumb, .diya-rail.is-dragging .diya-thumb { transform: translate(-50%, -50%) scale(1.15); }
+.diya-thumb img { filter: drop-shadow(0 0 6px oklch(0.82 0.16 68 / 55%)) drop-shadow(0 2px 3px oklch(0.1 0.05 15 / 70%)); }
+
+@keyframes heart-breathe { 0%,100% { transform: scale(1) } 50% { transform: scale(1.015) } }
+@keyframes petal {
+  0% { opacity: 0; transform: translate(-50%, -50%) rotate(0deg); }
+  15% { opacity: 1; }
+  100% { opacity: 0; transform: translate(calc(-50% + var(--px)), calc(-50% + var(--py))) rotate(var(--pr)); }
+}
+@keyframes spin { to { transform: rotate(360deg) } }
+@keyframes eq { 0% { height: 20% } 100% { height: 100% } }
+@keyframes cue { 0%,100% { transform: translateY(0); opacity: .65 } 50% { transform: translateY(8px); opacity: 1 } }
+@keyframes swipe-finger { 0% { transform: translateY(12px); opacity: 0 } 30% { opacity: 1 } 75% { opacity: 1 } 100% { transform: translateY(-16px); opacity: 0 } }
+@keyframes swipe-trail { to { stroke-dashoffset: -19 } }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { transition: none; opacity: 1; transform: none; }
+  .lamp .flame, .heart-glow, .disc.spin, .eq.on span, .scroll-cue, .swipe-finger, .swipe-trail, .petal { animation: none; }
+}
+
+/* temple-arch frame around the lineage card */
+.temple-arch { border: 1px solid oklch(0.78 0.11 80 / 55%); border-radius: 50% 50% 1.25rem 1.25rem / clamp(5rem,22vw,36rem) clamp(5rem,22vw,36rem) 1.25rem 1.25rem;
+  box-shadow: inset 0 0 0 6px var(--paper), inset 0 0 0 7px oklch(0.78 0.11 80 / 35%), 0 20px 60px -20px oklch(0.08 0.04 15 / 80%);
+  background: radial-gradient(ellipse 70% 40% at 50% 18%, oklch(0.32 0.12 28 / 70%), transparent 70%); }
+
+.temple-arch { overflow-wrap: anywhere; }
+.topbar { background: linear-gradient(180deg, oklch(0.17 0.07 14 / 96%), oklch(0.2 0.075 14 / 92%)); backdrop-filter: blur(8px); border-bottom: 1px solid oklch(0.78 0.11 80 / 55%); }
+.falling { position: absolute; top: -5%; animation: fall linear infinite; will-change: transform; }
+.falling.rose { border-radius: 70% 0 70% 0; background: radial-gradient(circle at 30% 30%, oklch(0.55 0.17 15), oklch(0.4 0.15 15)); opacity: .75; }
+.falling.speck { border-radius: 50%; background: oklch(0.78 0.1 75); opacity: .7; }
+@keyframes fall { 0% { transform: translate(0,0) rotate(0) } 50% { transform: translate(calc(var(--dx) * .5), 55vh) rotate(200deg) } 100% { transform: translate(var(--dx), 110vh) rotate(400deg) } }
+@media (prefers-reduced-motion: reduce) { .falling { animation: none; display: none; } }
